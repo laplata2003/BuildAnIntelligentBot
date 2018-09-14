@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <Platforms>AnyCPU;x64</Platforms>
+    <UserSecretsId>001fc58b-31a4-4000-9815-950e6f99d844</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,10 +13,12 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.5" />
     <PackageReference Include="Microsoft.Bot.Builder.Ai.LUIS" Version="4.0.1-preview" />
+    <PackageReference Include="Microsoft.Bot.Builder.Ai.QnA" Version="4.0.1-preview" />
     <PackageReference Include="Microsoft.Bot.Builder.Core" Version="4.0.1-preview" />
     <PackageReference Include="Microsoft.Bot.Builder.Core.Extensions" Version="4.0.1-preview" />
     <PackageReference Include="Microsoft.Bot.Builder.Dialogs" Version="4.0.1-preview" />
     <PackageReference Include="Microsoft.Bot.Builder.Integration.AspNet.Core" Version="4.0.1-preview" />
+    <PackageReference Include="Microsoft.Bot.Builder.PersonalityChat" Version="4.0.0-alpha-m1.0" />
     <PackageReference Include="NAudio" Version="1.8.4" />
   </ItemGroup>
 

@@ -36,6 +36,7 @@ namespace ChatBot
     {
 
         private readonly DialogSet _dialogs;
+        private readonly TextToSpeechService _ttsService;
 
         public EchoBot(IOptions<MySettings> config)
         {
@@ -45,6 +46,8 @@ namespace ChatBot
             _dialogs.Add(PromptStep.NamePrompt, new TextPrompt());
             _dialogs.Add(PromptStep.ConfirmationPrompt, new ConfirmPrompt(Culture.English));
             _dialogs.Add(PromptStep.GatherInfo, new WaterfallStep[] { TimeStep, AmountPeopleStep, NameStep, ConfirmationStep, FinalStep });
+
+            _ttsService = new TextToSpeechService(config.Value.VoiceFontName, config.Value.VoiceFontLanguage);
         }
 
         /// <summary>
@@ -72,7 +75,6 @@ namespace ChatBot
                     switch (topIntent != null ? topIntent.Value.intent : null)
                     {
                         case "TodaysSpecialty":
-                            //await context.SendActivity($"For today we have the following options: {string.Join(", ", BotConstants.Specialties)}");
                             await TodaysSpecialtiesHandler(context);
                             break;
 
@@ -91,7 +93,7 @@ namespace ChatBot
             else if (context.Activity.Type == ActivityTypes.ConversationUpdate && context.Activity.MembersAdded.FirstOrDefault()?.Id == context.Activity.Recipient.Id)
             {
                 var msg = "Hi! I'm a restaurant assistant bot. I can help you with your reservation.";
-                await context.SendActivity(msg);
+                await context.SendActivity(msg, _ttsService.GenerateSsml(msg, BotConstants.EnglishLanguage));
             }
         }
 
@@ -152,7 +154,7 @@ namespace ChatBot
                     msg = "Thanks for using the Contoso Assistance. See you soon!";
                 }
 
-                await dialogContext.Context.SendActivity(msg);
+                await dialogContext.Context.SendActivity(msg, _ttsService.GenerateSsml(msg, BotConstants.EnglishLanguage));
             }
 
             await dialogContext.End(state);
@@ -174,7 +176,7 @@ namespace ChatBot
             if (string.IsNullOrEmpty(state.Time))
             {
                 var msg = "When do you need the reservation?";
-                await dialogContext.Prompt(PromptStep.TimePrompt, msg);
+                await dialogContext.Prompt(PromptStep.TimePrompt, msg, new PromptOptions { Speak = _ttsService.GenerateSsml(msg, BotConstants.EnglishLanguage) });
             }
             else
             {
@@ -195,7 +197,7 @@ namespace ChatBot
             if (state.AmountPeople == null)
             {
                 var msg = "How many people will you need the reservation for?";
-                await dialogContext.Prompt(PromptStep.AmountPeoplePrompt, msg);
+                await dialogContext.Prompt(PromptStep.AmountPeoplePrompt, msg, new PromptOptions { Speak = _ttsService.GenerateSsml(msg, BotConstants.EnglishLanguage)});
             }
             else
             {
@@ -215,7 +217,7 @@ namespace ChatBot
             if (state.FullName == null)
             {
                 var msg = "And the name on the reservation?";
-                await dialogContext.Prompt(PromptStep.NamePrompt, msg);
+                await dialogContext.Prompt(PromptStep.NamePrompt, msg, new PromptOptions { Speak = _ttsService.GenerateSsml(msg, BotConstants.EnglishLanguage)});
             }
             else
             {
@@ -238,14 +240,22 @@ namespace ChatBot
                 var retryMsg = "Please confirm, say 'yes' or 'no' or something like that.";
 
                 await dialogContext.Prompt(
-                  PromptStep.ConfirmationPrompt,
-                  msg);
+                    PromptStep.ConfirmationPrompt,
+                    msg,
+                    new PromptOptions
+                    {
+                        Speak = _ttsService.GenerateSsml(msg, BotConstants.EnglishLanguage),
+                        RetryPromptString = retryMsg,
+                        RetrySpeak = _ttsService.GenerateSsml(retryMsg, BotConstants.EnglishLanguage)
+                    }
+                );
             }
             else
             {
                 await next();
             }
         }
+
 
     }    
 }

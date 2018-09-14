@@ -1,15 +1,24 @@
 {
     "name": "ChatBot",
     "description": "",
-    "secretKey": "",
     "services": [
-      {
-        "appId": "",
-        "id": "http://localhost:51375/api/messages",
-        "type": "endpoint",
-        "appPassword": "",
-        "endpoint": "http://localhost:51375/api/messages",
-        "name": "ChatBot"
-      }
-    ]
+        {
+            "type": "endpoint",
+            "appId": "",
+            "id": "http://localhost:51375/api/messages",
+            "appPassword": "",
+            "endpoint": "http://localhost:51375/api/messages",
+            "name": "ChatBot"
+        },
+        {
+            "type": "endpoint",
+            "endpoint": "https://chatbot-gdn.azurewebsites.net/api/messages",
+            "name": "Test",
+            "id": "58"
+        }
+    ],
+    "secretKey": "",
+    "version": "2.0",
+    "path": "C:\\projects\\azure\\bots\\BuildAnIntelligentBot\\src\\ChatBot\\ChatBot.bot",
+    "overrides": null
 }

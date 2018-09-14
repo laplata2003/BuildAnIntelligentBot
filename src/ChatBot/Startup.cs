@@ -11,6 +11,9 @@ using Microsoft.Extensions.DependencyInjection;
 using ChatBot.Models;
 using ChatBot.TranslatorSpeech;
 using Microsoft.Bot.Builder.Ai.LUIS;
+using Microsoft.Bot.Builder.Ai.QnA;
+using Microsoft.Bot.Builder.PersonalityChat;
+using Microsoft.Bot.Builder.PersonalityChat.Core;
 
 namespace ChatBot
 {
@@ -74,8 +77,34 @@ namespace ChatBot
                         new LuisModel(
                             "72d95dea-030c-4f3e-b75c-95788ae74b29",
                             "05548ec89ff840d4a5d454fc07196245",
-                            new Uri("https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/"))
-                    ));
+                            new Uri("https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/")
+                        )
+                    )
+                );
+
+                options.Middleware.Add(
+                    new QnAMakerMiddleware(
+                        new QnAMakerEndpoint
+                            {
+                                Host = "https://build-qna-gdn.azurewebsites.net/qnamaker",
+                                EndpointKey = "4d42a11f-f1fe-454b-b9fc-c2fd9b253d65",
+                                KnowledgeBaseId = "42ec8b6d-9c1a-4e5f-aa04-9d3b992234d7"
+                        },
+                        new QnAMakerMiddlewareOptions
+                            {
+                                EndActivityRoutingOnAnswer = true,
+                                ScoreThreshold = 0.9f
+                            }
+                    )
+                );
+
+                var personalityChatOptions = new PersonalityChatMiddlewareOptions(
+                    respondOnlyIfChat: true,
+                    scoreThreshold: 0.5F,
+                    botPersona: PersonalityChatPersona.Professional
+                );
+                options.Middleware.Add(new PersonalityChatMiddleware(personalityChatOptions));
+
             });
         }
 
