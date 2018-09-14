@@ -44,8 +44,7 @@ namespace ChatBot
             _dialogs.Add(PromptStep.AmountPeoplePrompt, new TextPrompt(AmountPeopleValidator));
             _dialogs.Add(PromptStep.NamePrompt, new TextPrompt());
             _dialogs.Add(PromptStep.ConfirmationPrompt, new ConfirmPrompt(Culture.English));
-            _dialogs.Add(PromptStep.GatherInfo, new WaterfallStep[] { FinalStep });
-//            _dialogs.Add(PromptStep.GatherInfo, new WaterfallStep[] { TimeStep, AmountPeopleStep, NameStep, ConfirmationStep, FinalStep });
+            _dialogs.Add(PromptStep.GatherInfo, new WaterfallStep[] { TimeStep, AmountPeopleStep, NameStep, ConfirmationStep, FinalStep });
         }
 
         /// <summary>
@@ -169,7 +168,84 @@ namespace ChatBot
             }
         }
 
+        private async Task TimeStep(DialogContext dialogContext, object result, SkipStepFunction next)
+        {
+            var state = dialogContext.Context.GetConversationState<ReservationData>();
+            if (string.IsNullOrEmpty(state.Time))
+            {
+                var msg = "When do you need the reservation?";
+                await dialogContext.Prompt(PromptStep.TimePrompt, msg);
+            }
+            else
+            {
+                await next();
+            }
+        }
 
+        private async Task AmountPeopleStep(DialogContext dialogContext, object result, SkipStepFunction next)
+        {
+            var state = dialogContext.Context.GetConversationState<ReservationData>();
+
+            if (result != null)
+            {
+                var time = (result as TextResult).Value;
+                state.Time = time;
+            }
+
+            if (state.AmountPeople == null)
+            {
+                var msg = "How many people will you need the reservation for?";
+                await dialogContext.Prompt(PromptStep.AmountPeoplePrompt, msg);
+            }
+            else
+            {
+                await next();
+            }
+        }
+
+        private async Task NameStep(DialogContext dialogContext, object result, SkipStepFunction next)
+        {
+            var state = dialogContext.Context.GetConversationState<ReservationData>();
+
+            if (result != null)
+            {
+                state.AmountPeople = (result as TextResult).Value;
+            }
+
+            if (state.FullName == null)
+            {
+                var msg = "And the name on the reservation?";
+                await dialogContext.Prompt(PromptStep.NamePrompt, msg);
+            }
+            else
+            {
+                await next();
+            }
+        }
+
+        private async Task ConfirmationStep(DialogContext dialogContext, object result, SkipStepFunction next)
+        {
+            var state = dialogContext.Context.GetConversationState<ReservationData>();
+
+            if (result != null)
+            {
+                state.FullName = (result as TextResult).Value;
+            }
+
+            if (state.Confirmed == null)
+            {
+                var msg = $"Ok. Let me confirm the information: This is a reservation for {state.Time} for {state.AmountPeople} people. Is that correct?";
+                var retryMsg = "Please confirm, say 'yes' or 'no' or something like that.";
+
+                await dialogContext.Prompt(
+                  PromptStep.ConfirmationPrompt,
+                  msg);
+            }
+            else
+            {
+                await next();
+            }
+        }
 
     }    
 }

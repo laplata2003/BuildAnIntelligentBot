@@ -5,10 +5,10 @@
     "services": [
       {
         "appId": "",
-        "id": "http://localhost:63317/api/messages",
+        "id": "http://localhost:51375/api/messages",
         "type": "endpoint",
         "appPassword": "",
-        "endpoint": "http://localhost:63317/api/messages",
+        "endpoint": "http://localhost:51375/api/messages",
         "name": "ChatBot"
       }
     ]
