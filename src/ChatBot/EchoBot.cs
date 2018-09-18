@@ -105,9 +105,12 @@ namespace ChatBot
         {
             var actions = new[]
             {
-                new CardAction(type: ActionTypes.ShowImage, title: "Carbonara", value: "Carbonara", image: $"{BotConstants.Site}/carbonara.jpg"),
-                new CardAction(type: ActionTypes.ShowImage, title: "Pizza", value: "Pizza", image: $"{BotConstants.Site}/pizza.jpg"),
-                new CardAction(type: ActionTypes.ShowImage, title: "Lasagna", value: "Lasagna", image: $"{BotConstants.Site}/lasagna.jpg")
+                //new CardAction(type: ActionTypes.ShowImage, title: "Carbonara", value: "Carbonara", image: $"{BotConstants.Site}/carbonara.jpg"),
+                //new CardAction(type: ActionTypes.ShowImage, title: "Pizza", value: "Pizza", image: $"{BotConstants.Site}/pizza.jpg"),
+                //new CardAction(type: ActionTypes.ShowImage, title: "Lasagna", value: "Lasagna", image: $"{BotConstants.Site}/lasagna.jpg")
+                new CardAction(type: ActionTypes.ShowImage, title: "Carbonara", value: "Carbonara", image: "/images/carbonara.jpg"),
+                new CardAction(type: ActionTypes.ShowImage, title: "Pizza", value: "Pizza", image: "/images/pizza.jpg"),
+                new CardAction(type: ActionTypes.ShowImage, title: "Lasagna", value: "Lasagna", image: "/images/lasagna.jpg")
             };
 
             var cards = actions
