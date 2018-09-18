@@ -73,6 +73,15 @@ namespace ChatBot
                 options.Middleware.Add(new ConversationState<ReservationData>(dataStore));
 
                 options.Middleware.Add(
+                    new TranslatorSpeechMiddleware(
+                        Configuration["TranslatorSpeechSubscriptionKey"],
+                        Configuration["TranslatorTextSubscriptionKey"],
+                        Configuration["VoiceFontName"],
+                        Configuration["VoiceFontLanguage"]
+                    )
+                );
+
+                options.Middleware.Add(
                     new LuisRecognizerMiddleware(
                         new LuisModel(
                             "72d95dea-030c-4f3e-b75c-95788ae74b29",
