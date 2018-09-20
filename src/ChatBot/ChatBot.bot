@@ -12,13 +12,13 @@
         },
         {
             "type": "endpoint",
-            "endpoint": "https://chatbot-gdn.azurewebsites.net/api/messages",
+            "endpoint": "https://chatbot-xxxxx.azurewebsites.net/api/messages",
             "name": "Test",
             "id": "58"
         }
     ],
     "secretKey": "",
     "version": "2.0",
-    "path": "C:\\projects\\azure\\bots\\BuildAnIntelligentBot\\src\\ChatBot\\ChatBot.bot",
+    "path": "C:\\xxxxx\\ChatBot.bot",
     "overrides": null
 }

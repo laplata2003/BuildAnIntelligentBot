@@ -84,8 +84,8 @@ namespace ChatBot
                 options.Middleware.Add(
                     new LuisRecognizerMiddleware(
                         new LuisModel(
-                            "72d95dea-030c-4f3e-b75c-95788ae74b29",
-                            "05548ec89ff840d4a5d454fc07196245",
+                            "xxxxxxxxxxxxxxxxxxxxxxxxx",
+                            "xxxxxxxxxxxxxxxxxxxxxxxxx",
                             new Uri("https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/")
                         )
                     )
@@ -95,9 +95,9 @@ namespace ChatBot
                     new QnAMakerMiddleware(
                         new QnAMakerEndpoint
                             {
-                                Host = "https://build-qna-gdn.azurewebsites.net/qnamaker",
-                                EndpointKey = "4d42a11f-f1fe-454b-b9fc-c2fd9b253d65",
-                                KnowledgeBaseId = "42ec8b6d-9c1a-4e5f-aa04-9d3b992234d7"
+                                Host = "https://build-qna-xxxxx.azurewebsites.net/qnamaker",
+                                EndpointKey = "xxxxxxxxxxxxxxxxxxxxxxxxx",
+                                KnowledgeBaseId = "xxxxxxxxxxxxxxxxxxxxxxxxx"
                         },
                         new QnAMakerMiddlewareOptions
                             {
